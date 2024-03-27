@@ -1,9 +1,11 @@
 package com.sieng.java.phoneshop_sieng.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sieng.java.phoneshop_sieng.dto.BrandDTO;
+import com.sieng.java.phoneshop_sieng.dto.PageDTO;
 import com.sieng.java.phoneshop_sieng.entity.Brand;
 import com.sieng.java.phoneshop_sieng.mapper.BrandMapper;
 import com.sieng.java.phoneshop_sieng.service.BrandService;
@@ -49,25 +52,22 @@ public class BrandController {
 		
 	}
 	
-	@GetMapping
-	public ResponseEntity<?> getBrands(){
-		
-		List<BrandDTO> list = brandService.getBrands()
-		.stream()
-		.map(br->BrandMapper.Instance.toBrandDTO(br))
-		.collect(Collectors.toList());
-		return ResponseEntity.ok(list);
-		
-	}
 	
-	@GetMapping("filter")
-	public ResponseEntity<?> getBrands(@RequestParam("name") String name){
-		
-		List<BrandDTO> list = brandService.getBrands(name)
+	
+	@GetMapping
+	public ResponseEntity<?> getBrands(@RequestParam Map<String, String> params){
+		Page<Brand> page = brandService.getBrands(params);
+		PageDTO pageDTO = new PageDTO(page);
+				
+		/*List<BrandDTO> list = brandService.getBrands(params)
 		.stream()
 		.map(br->BrandMapper.Instance.toBrandDTO(br))
 		.collect(Collectors.toList());
-		return ResponseEntity.ok(list);
+		return ResponseEntity.ok(list); */
+		
+		
+		return ResponseEntity.ok(pageDTO);
+		
 		
 	}
 
