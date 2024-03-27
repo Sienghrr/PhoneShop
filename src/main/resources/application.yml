@@ -1,0 +1,13 @@
+server:
+ port: 8081
+spring:
+ datasource:
+   url: jdbc:postgresql://localhost:5432/db_phoneshop
+   username: sieng
+   password: 1234
+ jpa:
+   properties:
+     hibernate:
+      dialect:  org.hibernate.dialect.PostgreSQLDialect
+   hibernate:
+     ddl-auto: update
