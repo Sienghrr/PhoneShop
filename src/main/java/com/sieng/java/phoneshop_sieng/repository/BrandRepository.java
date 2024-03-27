@@ -10,6 +10,7 @@ import com.sieng.java.phoneshop_sieng.entity.Brand;
 
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Integer>,JpaSpecificationExecutor<Brand> {
+	List<Brand> findByNameLike(String name);
 	List<Brand> findByNameContaining(String name);
 
 }
