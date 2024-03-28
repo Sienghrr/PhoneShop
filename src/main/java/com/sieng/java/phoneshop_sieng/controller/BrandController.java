@@ -29,6 +29,7 @@ public class BrandController {
 	@Autowired
 	private BrandService brandService;
 	
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody BrandDTO brandDTO){
 		Brand brand = BrandMapper.Instance.toBrand(brandDTO);
