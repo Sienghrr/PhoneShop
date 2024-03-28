@@ -39,7 +39,7 @@ public class BrandController {
 	
 	@GetMapping("{id}")
 	public ResponseEntity<?> findBrandbyid(@PathVariable Integer id){
-		Brand brand = brandService.findbyId(id);
+		Brand brand = brandService.getbyId(id);
 		return ResponseEntity.ok(BrandMapper.Instance.toBrandDTO(brand));
 		
 	}

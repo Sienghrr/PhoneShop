@@ -10,7 +10,7 @@ import com.sieng.java.phoneshop_sieng.entity.Brand;
 public interface BrandService {
 	
 	Brand create(Brand brand);
-	Brand findbyId(Integer id);
+	Brand getbyId(Integer id);
 	Brand update(Integer id ,Brand brandUpdate);
 	List<Brand> getBrands(String name);
 	//List<Brand> getBrands(Map<String, String>params);

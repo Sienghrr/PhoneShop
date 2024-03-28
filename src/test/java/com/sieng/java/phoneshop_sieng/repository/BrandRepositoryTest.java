@@ -19,6 +19,7 @@ public class BrandRepositoryTest {
 	@Test
 	public void testFindbyNameLike() {
 		
+		
 		//given
 		Brand brand = new Brand();
 		brand.setName("Techno");

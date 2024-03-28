@@ -17,11 +17,14 @@ import com.sieng.java.phoneshop_sieng.spec.BrandSpec;
 import com.sieng.java.phoneshop_sieng.spec.Brandfilter;
 import com.sieng.java.phoneshop_sieng.util.PageUtil;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class BrandServiceImpl implements BrandService{
 	
 	@Autowired
-	private BrandRepository brandRepository;
+	private final BrandRepository brandRepository;
 
 	@Override
 	public Brand create(Brand brand) {
@@ -30,7 +33,8 @@ public class BrandServiceImpl implements BrandService{
 	}
 
 	@Override
-	public Brand findbyId(Integer id) {
+	public Brand getbyId(Integer id) {
+		
 		return brandRepository.findById(id)
 				//.orElseThrow(()->new HttpClientErrorException(HttpStatus.NOT_FOUND,String.format( "Brand with id = %d not found", id)));
 				.orElseThrow(()->new ResourceNotFoundException("brand", id));
@@ -40,7 +44,7 @@ public class BrandServiceImpl implements BrandService{
 
 	@Override
 	public Brand update(Integer id, Brand brandUpdate) {
-		Brand brand = findbyId(id);
+		Brand brand = getbyId(id);
 		brand.setName(brandUpdate.getName());
 		return brandRepository.save(brand);
 	}
