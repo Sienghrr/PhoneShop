@@ -17,17 +17,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sieng.java.phoneshop_sieng.dto.BrandDTO;
+import com.sieng.java.phoneshop_sieng.dto.ModelDTO;
 import com.sieng.java.phoneshop_sieng.dto.PageDTO;
 import com.sieng.java.phoneshop_sieng.entity.Brand;
+import com.sieng.java.phoneshop_sieng.entity.Model;
 import com.sieng.java.phoneshop_sieng.mapper.BrandMapper;
+import com.sieng.java.phoneshop_sieng.mapper.ModelEntityMapper;
 import com.sieng.java.phoneshop_sieng.service.BrandService;
+import com.sieng.java.phoneshop_sieng.service.ModelService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("brands")
+@RequiredArgsConstructor
 public class BrandController {
 	
-	@Autowired
-	private BrandService brandService;
+	private final BrandService brandService;
+	private final ModelService modelService;
+	private final ModelEntityMapper modelMapper;
 	
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -71,5 +79,17 @@ public class BrandController {
 		
 		
 	}
+	
+	@GetMapping("{id}/models")
+	public ResponseEntity<?> getModelBybrand(@PathVariable("id") Integer brandId){
+		List<Model> brands = modelService.getByBrand(brandId);
+		List<ModelDTO> list = brands.stream()
+		//.map(model->modelMapper.toModelDTO(model))
+		.map(modelMapper::toModelDTO)				
+		.toList();
+		return ResponseEntity.ok(list);
+		
+	}
+
 
 }

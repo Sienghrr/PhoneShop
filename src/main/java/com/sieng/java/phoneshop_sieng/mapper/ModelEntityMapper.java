@@ -10,9 +10,9 @@ import com.sieng.java.phoneshop_sieng.entity.Model;
 import com.sieng.java.phoneshop_sieng.service.BrandService;
 
 @Mapper(componentModel = "spring",uses = {BrandService.class})
-public interface ModelMapper {
+public interface ModelEntityMapper {
 	
-	ModelMapper Instance = Mappers.getMapper(ModelMapper.class);
+	ModelEntityMapper Instance = Mappers.getMapper(ModelEntityMapper.class);
 	
 	@Mapping(target = "brand" , source = "brandId")
 	Model toModel(ModelDTO dto );

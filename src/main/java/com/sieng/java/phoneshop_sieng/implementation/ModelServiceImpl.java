@@ -1,5 +1,7 @@
 package com.sieng.java.phoneshop_sieng.implementation;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.sieng.java.phoneshop_sieng.entity.Model;
@@ -18,6 +20,12 @@ public class ModelServiceImpl implements ModelService {
 	@Override
 	public Model create(Model model) {
 		return modelRepository.save(model);
+	}
+
+	@Override
+	public List<Model> getByBrand(Integer brandId) {
+		return modelRepository.findByBrandId(brandId);
+		
 	}
 
 }
