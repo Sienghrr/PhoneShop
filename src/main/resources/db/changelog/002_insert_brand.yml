@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+     id: 002_insert_brand
+     author: siengsweetheart151@gmail.com
+     changes:
+     - loadData:
+         tableName: brands
+         columns:
+         - column:                  
+             name: brand_id
+             type: NUM	ERIC
+         - column:
+             name: brand_name
+             type: STRING
+             
+         file: db/data/002_brands.csv
+   
+   
+        
+    

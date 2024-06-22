@@ -29,6 +29,7 @@ public class BrandSpec implements Specification<Brand> {
 			
 		}
 		if(brandfilter.getId() != null) {
+			
 			Predicate id = brand.get("id").in(brandfilter.getId());
 			predicates.add(id);			
 			

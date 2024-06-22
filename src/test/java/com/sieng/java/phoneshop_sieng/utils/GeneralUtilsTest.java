@@ -11,6 +11,8 @@ public class GeneralUtilsTest {
 	
 	@Test
 	public void testTointeger() {
+		
+		
 	//given
 	List<String> name = List.of("sieng","Ly pu","kaka");
 	
@@ -44,6 +46,7 @@ public class GeneralUtilsTest {
 		
 		
 	}
+	
 	
 
 }
