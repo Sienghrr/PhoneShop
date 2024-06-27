@@ -33,7 +33,7 @@ public class BrandServiceImpl implements BrandService{
 	}
 
 	@Override
-	public Brand getbyId(Integer id) {
+	public Brand getbyId(Long id) {
 		
 		return brandRepository.findById(id)
 				//.orElseThrow(()->new HttpClientErrorException(HttpStatus.NOT_FOUND,String.format( "Brand with id = %d not found", id)));
@@ -44,7 +44,7 @@ public class BrandServiceImpl implements BrandService{
 	}
 
 	@Override
-	public Brand update(Integer id, Brand brandUpdate) {
+	public Brand update(Long id, Brand brandUpdate) {
 		Brand brand = getbyId(id);
 		brand.setName(brandUpdate.getName());
 		return brandRepository.save(brand);

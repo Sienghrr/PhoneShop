@@ -6,5 +6,6 @@ import com.sieng.java.phoneshop_sieng.entity.Model;
 
 public interface ModelService {
 	Model create(Model model);
-	List<Model> getByBrand(Integer brandId);
+	List<Model> getByBrand(Long brandId);
+	Model getById(Long id);
 }

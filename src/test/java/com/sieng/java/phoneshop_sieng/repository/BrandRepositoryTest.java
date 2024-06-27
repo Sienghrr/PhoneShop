@@ -36,9 +36,9 @@ public class BrandRepositoryTest {
 		
 		//then 
 		
-		assertEquals(1, brands.size());
+		assertEquals(1l, brands.size());
 		assertEquals("Techno", brands.get(0).getName());
-		assertEquals(1, brands.get(0).getId());
+		assertEquals(1l, brands.get(0).getId());
 		
 	}
 

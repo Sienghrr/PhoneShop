@@ -1,5 +1,9 @@
 package com.sieng.java.phoneshop_sieng.entity;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,16 +16,26 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name ="models")
-public class Model {
+@Table(name="saleDetails")
+public class SaleDetail {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "sales_detail_id" )
 	private Long id;
 	
-	private String name;
+	@Column(name = "unit")
+	private Integer Unit;
+	
+	@Column(name = "amount")
+	private BigDecimal Amount;
 	
 	@ManyToOne
-	@JoinColumn(name = "brand_id")
-	private Brand brand;
+	@JoinColumn(name = "sale_id")
+	private Sale sale;
+	
+	@ManyToOne
+	@JoinColumn(name = "sale_detail_id")
+	private SaleDetail saleDetail;
 
 }
