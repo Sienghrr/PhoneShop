@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +23,7 @@ import com.sieng.java.phoneshop_sieng.dto.BrandDTO;
 import com.sieng.java.phoneshop_sieng.dto.ModelDTO;
 import com.sieng.java.phoneshop_sieng.dto.PageDTO;
 import com.sieng.java.phoneshop_sieng.dto.ProductDTO;
+import com.sieng.java.phoneshop_sieng.dto.ProductImportDto;
 import com.sieng.java.phoneshop_sieng.entity.Brand;
 import com.sieng.java.phoneshop_sieng.entity.Model;
 import com.sieng.java.phoneshop_sieng.entity.Product;
@@ -49,5 +53,11 @@ public class ProductController {
 		return ResponseEntity.ok(product);
 	}
 	
+	@PostMapping("importProduct")
+	public ResponseEntity<?> importProduct (@RequestBody @Valid ProductImportDto importDto){
+		productService.importProduct(importDto);		
+		return ResponseEntity.ok().build();
+		
+	}
 	
 }
