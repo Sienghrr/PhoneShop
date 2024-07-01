@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.DecimalMin;
 
 import lombok.Data;
 
@@ -30,6 +31,7 @@ public class Product {
 	@Column(name = "available_unit")
 	private Integer availableUnit;
 	
+	@DecimalMin(value = "000.1", message = "prie must be greater than 0")
 	@Column(name = "sale_price")
 	private BigDecimal salePrice;
 	

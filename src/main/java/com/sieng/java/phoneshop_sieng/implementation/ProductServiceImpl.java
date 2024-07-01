@@ -1,5 +1,7 @@
 package com.sieng.java.phoneshop_sieng.implementation;
 
+import java.math.BigDecimal;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +54,19 @@ public class ProductServiceImpl implements ProductService{
 		// save product import history
 		ProductImportHistory productImportHistory = productMapper.toProductImportHistory(productImportDto, product);
 		productImportHistoryRepository.save(productImportHistory);
+		
+	}
+
+	@Override
+	public void setSalePrice(Long productId, BigDecimal price) {
+		Product product = getById(productId);
+		product.setSalePrice(price);
+		productRepository.save(product);
+	}
+
+	@Override
+	public void validateStock(Long productId, Integer numberOfUnit) {
+		// TODO Auto-generated method stub
 		
 	}
 

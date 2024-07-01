@@ -25,6 +25,7 @@ import com.sieng.java.phoneshop_sieng.dto.PageDTO;
 import com.sieng.java.phoneshop_sieng.dto.PriceDto;
 import com.sieng.java.phoneshop_sieng.dto.ProductDTO;
 import com.sieng.java.phoneshop_sieng.dto.ProductImportDto;
+import com.sieng.java.phoneshop_sieng.dto.SaleDto;
 import com.sieng.java.phoneshop_sieng.entity.Brand;
 import com.sieng.java.phoneshop_sieng.entity.Model;
 import com.sieng.java.phoneshop_sieng.entity.Product;
@@ -34,36 +35,21 @@ import com.sieng.java.phoneshop_sieng.mapper.ProductMapper;
 import com.sieng.java.phoneshop_sieng.service.BrandService;
 import com.sieng.java.phoneshop_sieng.service.ModelService;
 import com.sieng.java.phoneshop_sieng.service.ProductService;
+import com.sieng.java.phoneshop_sieng.service.SaleService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("products")
+@RequestMapping("sales")
 @RequiredArgsConstructor
-public class ProductController {
+public class SaleController {
 	
-	private final ProductService productService;
-	private final ProductMapper productMapper;
+	private final SaleService saleService;
 	
-	
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> create(@RequestBody ProductDTO productDTO){
-		 Product product = productMapper.toProduct(productDTO);
-	     product = productService.create(product);		
-		
-		return ResponseEntity.ok(product);
-	}
-	
-	@PostMapping("importProduct")
-	public ResponseEntity<?> importProduct (@RequestBody @Valid ProductImportDto importDto){
-		productService.importProduct(importDto);		
-		return ResponseEntity.ok().build();
-		
-	}
-	
-	@PostMapping("{productId}/setSalePrice")
-	public ResponseEntity<?> setSalePrice (@PathVariable Long productId , @RequestBody PriceDto priceDto){
-		productService.setSalePrice(productId, priceDto.getPrice());	
+	@PostMapping
+	public ResponseEntity<?> create(@RequestBody SaleDto saleDto){
+		saleService.sell(saleDto);
 		return ResponseEntity.ok().build();
 	}
+	
 }
