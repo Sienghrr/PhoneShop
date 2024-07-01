@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sieng.java.phoneshop_sieng.dto.BrandDTO;
 import com.sieng.java.phoneshop_sieng.dto.ModelDTO;
@@ -65,5 +66,12 @@ public class ProductController {
 	public ResponseEntity<?> setSalePrice (@PathVariable Long productId , @RequestBody PriceDto priceDto){
 		productService.setSalePrice(productId, priceDto.getPrice());	
 		return ResponseEntity.ok().build();
+	}
+	
+	
+	@PostMapping("uploadProduct")
+	public ResponseEntity<?> uploadProduct(@RequestParam("file") MultipartFile file){
+		Map<Integer, String> errorMap = productService.uploadProducts(file);
+		return ResponseEntity.ok(errorMap);
 	}
 }

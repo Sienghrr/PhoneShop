@@ -1,7 +1,6 @@
 package com.sieng.java.phoneshop_sieng.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -12,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
@@ -32,7 +33,8 @@ public class ProductImportHistory {
 	private BigDecimal PricePerUnit;	
 	
 	@Column(name = "date_import")
-	private LocalDate dateImport;
+	//@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime dateImport;
 	
 	@ManyToOne
 	@JoinColumn(name = "product_id")

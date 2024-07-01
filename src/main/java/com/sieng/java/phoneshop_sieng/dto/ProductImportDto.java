@@ -1,7 +1,6 @@
 package com.sieng.java.phoneshop_sieng.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.validation.constraints.DecimalMin;
@@ -22,6 +21,6 @@ public class ProductImportDto {
 	private BigDecimal importPrice;
 	
 	@NotNull(message = "date cannot be null")
-	private LocalDate importDate;
+	private LocalDateTime importDate;
 
 }
