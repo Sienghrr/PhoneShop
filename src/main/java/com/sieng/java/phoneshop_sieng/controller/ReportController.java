@@ -1,5 +1,6 @@
 package com.sieng.java.phoneshop_sieng.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -8,6 +9,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,9 +34,11 @@ import com.sieng.java.phoneshop_sieng.entity.Product;
 import com.sieng.java.phoneshop_sieng.mapper.BrandMapper;
 import com.sieng.java.phoneshop_sieng.mapper.ModelEntityMapper;
 import com.sieng.java.phoneshop_sieng.mapper.ProductMapper;
+import com.sieng.java.phoneshop_sieng.projection.ProductSold;
 import com.sieng.java.phoneshop_sieng.service.BrandService;
 import com.sieng.java.phoneshop_sieng.service.ModelService;
 import com.sieng.java.phoneshop_sieng.service.ProductService;
+import com.sieng.java.phoneshop_sieng.service.ReportService;
 import com.sieng.java.phoneshop_sieng.service.SaleService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,20 +46,17 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("sales")
 @RequiredArgsConstructor
-public class SaleController {
+public class ReportController {
 	
-	private final SaleService saleService;
+	private final ReportService reportService;
 	
-	@PostMapping
-	public ResponseEntity<?> create(@RequestBody SaleDto saleDto){
-		saleService.sell(saleDto);
-		return ResponseEntity.ok().build();
+	@GetMapping("{startDate}/{endDate}")
+	public ResponseEntity<?> productSold(@DateTimeFormat(pattern = "yyyy-MM-dd")@PathVariable("startDate")LocalDate startDate ,
+			@DateTimeFormat(pattern = "yyyy-MM-dd")@PathVariable("endDate") LocalDate endDate){
+		List<ProductSold> productSolds = reportService.getProductSold(startDate, endDate);
+		return ResponseEntity.ok(productSolds);
 	}
 	
-	@PutMapping("{saleId}/cancel")
-	public ResponseEntity<?> cancelSale(@PathVariable Long saleId){
-		saleService.cancelSale(saleId);
-		return ResponseEntity.ok().build();
-		}
+	
 	
 }

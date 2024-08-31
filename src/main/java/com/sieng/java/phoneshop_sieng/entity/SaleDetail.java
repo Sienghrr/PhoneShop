@@ -30,6 +30,8 @@ public class SaleDetail {
 	@Column(name = "amount")
 	private BigDecimal Amount;
 	
+	private LocalDateTime soldDate;
+	
 	@ManyToOne
 	@JoinColumn(name = "sale_id")
 	private Sale sale;
