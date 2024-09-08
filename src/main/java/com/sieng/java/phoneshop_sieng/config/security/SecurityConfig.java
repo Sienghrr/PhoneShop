@@ -6,11 +6,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+import com.sieng.java.phoneshop_sieng.config.jwt.JwtLonginFilter;
+import com.sieng.java.phoneshop_sieng.config.jwt.TokenVerify;
 
 @Configuration
 @EnableGlobalMethodSecurity(
@@ -25,6 +29,10 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter{
 @Override
 protected void configure(HttpSecurity http) throws Exception {
 	http.csrf().disable()
+		.addFilter(new JwtLonginFilter(authenticationManager()))
+		.addFilterAfter(new TokenVerify(), JwtLonginFilter.class)
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and()
 		.authorizeHttpRequests()
 		.antMatchers("/","index.html","css/**","js/**").permitAll()
 		//.antMatchers("/brands").hasRole("SALE")
@@ -33,10 +41,8 @@ protected void configure(HttpSecurity http) throws Exception {
 		//.antMatchers(HttpMethod.POST,"/brands").hasAuthority(BRAND_WRITE.getDescription())
 		//.antMatchers(HttpMethod.GET,"/brands").hasAuthority(BRAND_READ.getDescription())
 		.anyRequest()
-		.authenticated()
-		.and()
-		.httpBasic();
-		    
+		.authenticated();
+		
 }
 
 @Bean
