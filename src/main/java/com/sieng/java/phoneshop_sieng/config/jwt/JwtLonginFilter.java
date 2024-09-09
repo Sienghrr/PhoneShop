@@ -34,7 +34,7 @@ public class JwtLonginFilter extends UsernamePasswordAuthenticationFilter{
 			LoginRequest loginRequest = mapper.readValue(request.getInputStream(), LoginRequest.class);
 			
 			Authentication authentication = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
-			Authentication authenticate = authenticationManager.authenticate(authentication);
+			Authentication 	authenticate = authenticationManager.authenticate(authentication);
 			return authenticate;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
