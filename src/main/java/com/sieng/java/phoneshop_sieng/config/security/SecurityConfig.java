@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.sieng.java.phoneshop_sieng.config.jwt.FilterChainExceptionHandler;
 import com.sieng.java.phoneshop_sieng.config.jwt.JwtLonginFilter;
 import com.sieng.java.phoneshop_sieng.config.jwt.TokenVerify;
 
@@ -35,10 +36,13 @@ public class SecurityConfig {
 	@Autowired
 	private AuthenticationConfiguration authenticationConfiguration;
 	
+	private FilterChainExceptionHandler filterChainExceptionHandler;
+	
 	@Bean
 	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 	http.csrf().disable()
 		.addFilter(new JwtLonginFilter(authenticationManager(authenticationConfiguration)))
+		.addFilterBefore(filterChainExceptionHandler, JwtLonginFilter.class)
 		.addFilterAfter(new TokenVerify(), JwtLonginFilter.class)
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and()		

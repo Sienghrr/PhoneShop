@@ -12,6 +12,8 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -29,6 +31,9 @@ public class BrandServiceTest {
 	
 	
 	private BrandService brandService;
+	
+	@Captor
+	private ArgumentCaptor<Brand> brandCaptor;
 	
 	@BeforeEach
 	public void setUp() {
@@ -105,5 +110,42 @@ public class BrandServiceTest {
 		
 		//then
 	}
-
+		@Test
+		public void updateTest() {
+			
+			//given 
+			Brand brandInDb = new Brand(1L,"apple");
+			Brand brand = new Brand(1L,"apple 2");
+			
+			
+			// when
+			when(brandRepository.findById(1L)).thenReturn(Optional.ofNullable(brandInDb));
+			when(brandRepository.save(any(Brand.class))).thenReturn(brand);
+			Brand brandToUpdate = brandService.update(1L, brand);
+			
+			
+			//then
+			
+			verify(brandRepository, times(1)).findById(1L);
+			//assertEquals("apple 2", brandToUpdate.getName());
+			verify(brandRepository).save(brandCaptor.capture());
+			assertEquals("apple 2",  brandCaptor.getValue().getName());
+			assertEquals(1L, brandCaptor.getValue().getId());
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
