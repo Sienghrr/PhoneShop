@@ -3,76 +3,66 @@ package com.sieng.java.phoneshop_sieng.config.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 import com.sieng.java.phoneshop_sieng.config.jwt.JwtLonginFilter;
 import com.sieng.java.phoneshop_sieng.config.jwt.TokenVerify;
+
+import io.swagger.models.HttpMethod;
 
 @Configuration
 @EnableGlobalMethodSecurity(
 		  prePostEnabled = true, 
 		  securedEnabled = true, 
 		  jsr250Enabled = true)
-public class SecurityConfig  extends WebSecurityConfigurerAdapter{
+public class SecurityConfig {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private UserDetailsService userDetailsService;	
+	@Autowired
+	private AuthenticationConfiguration authenticationConfiguration;
 	
-@Override
-protected void configure(HttpSecurity http) throws Exception {
+	@Bean
+	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 	http.csrf().disable()
-		.addFilter(new JwtLonginFilter(authenticationManager()))
+		.addFilter(new JwtLonginFilter(authenticationManager(authenticationConfiguration)))
 		.addFilterAfter(new TokenVerify(), JwtLonginFilter.class)
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and()
+		.and()		
 		.authorizeHttpRequests()
-		.antMatchers("/","index.html","css/**","js/**").permitAll()		
+	
+		.antMatchers("/","index.html","css/**","js/**").permitAll()	
+		.antMatchers(org.springframework.http.HttpMethod.PUT ,"/brands/**").hasAuthority(PermissionEnum.BRAND_WRITE.getDescription())
 		.anyRequest()
-		.authenticated();
+		.authenticated();	
+        return http.build();
 		
 }
 
-/*@Bean
-@Override
-	protected UserDetailsService userDetailsService() {
-	
-	//User user1 = new User("sieng", passwordEncoder.encode("sieng123"), Collections.emptyList());
-	
-	UserDetails user2 = User.builder()
-	.username("ly")
-	.password(passwordEncoder.encode("ly123"))
-	//.roles("ADMIN") // ROLE_ADMIN
-	.authorities(RoleEnum.ADMIN.getAuthorities())
-	.build();
-	UserDetails user1 = User.builder()
-			.username("sieng")
-			.password(passwordEncoder.encode("sieng123"))
-			//.roles("SALE") // ROLE_SALE
-			.authorities(RoleEnum.SALE.getAuthorities())
-			.build();
-	
-	UserDetailsService userDetailsService = new InMemoryUserDetailsManager(user2,user1);	
-	
-		return userDetailsService;
-	}*/
+@Bean
+AuthenticationManager authenticationManager(
+        AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
+}
 
-@Override
-protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+@Autowired
+public void configure(AuthenticationManagerBuilder auth) throws Exception {
 	auth.authenticationProvider(getAuthenticationProvider());
 }
+
 public AuthenticationProvider getAuthenticationProvider() {
 	DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 	authenticationProvider.setUserDetailsService(userDetailsService);
