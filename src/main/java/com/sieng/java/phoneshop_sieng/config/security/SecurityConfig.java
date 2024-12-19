@@ -31,7 +31,7 @@ protected void configure(HttpSecurity http) throws Exception {
 	http.csrf().disable()
 		.addFilter(new JwtLonginFilter(authenticationManager()))
 		.addFilterAfter(new TokenVerify(), JwtLonginFilter.class)
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)// stateless mean not store in db opposite of stateful
 		.and()
 		.authorizeHttpRequests()
 		.antMatchers("/","index.html","css/**","js/**").permitAll()
