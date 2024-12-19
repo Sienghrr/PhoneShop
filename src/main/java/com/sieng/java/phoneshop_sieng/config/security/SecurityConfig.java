@@ -19,7 +19,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class SecurityConfig  extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder; // because spring is standard so we cannot use normal password
+						//we need to encrypt our password
 	
 @Override
 protected void configure(HttpSecurity http) throws Exception {
@@ -29,11 +30,14 @@ protected void configure(HttpSecurity http) throws Exception {
 		.anyRequest()
 		.authenticated()
 		.and()
-		.httpBasic();
+		.httpBasic(); 
+
+	// this whole configure is convert from form to basic auth
+	//basic spring security
 		    
 }
 
-@Bean
+@Bean // if our method not void return type we must put @bean
 @Override
 	protected UserDetailsService userDetailsService() {
 	
