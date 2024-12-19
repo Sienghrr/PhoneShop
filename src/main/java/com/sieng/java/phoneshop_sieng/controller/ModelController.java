@@ -22,7 +22,7 @@ public class ModelController {
 	private final ModelService modelService;
 	private final ModelEntityMapper modelMapper;
 	
-	@RolesAllowed("ROLE_ADMIN")
+	@RolesAllowed("ROLE_ADMIN") // use above class ModelController if we want to apply all method in that class
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody ModelDTO modelDTO){
 		Model model = modelMapper.toModel(modelDTO);
