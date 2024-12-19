@@ -29,7 +29,8 @@ public class JwtLonginFilter extends UsernamePasswordAuthenticationFilter{
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper();// convert json to java  we call it deserialize
+							// convert java to json we call it serialize
 		try {
 			LoginRequest loginRequest = mapper.readValue(request.getInputStream(), LoginRequest.class);
 			
