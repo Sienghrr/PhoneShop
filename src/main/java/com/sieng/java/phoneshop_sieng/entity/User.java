@@ -24,7 +24,7 @@ public class User {
 	private String password;
 	private String firstName;
 	private String lastName;
-	@Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING) // convert integer to string
 	private RoleEnum role;
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
