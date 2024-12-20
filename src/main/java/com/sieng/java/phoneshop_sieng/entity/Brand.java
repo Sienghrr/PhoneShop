@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Brand extends AuditEntity{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // auto increase id via id in database
 	@Column(name = "brand_id" )
 	private Long id;
 	

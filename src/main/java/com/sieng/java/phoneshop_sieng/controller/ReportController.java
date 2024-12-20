@@ -28,6 +28,7 @@ import com.sieng.java.phoneshop_sieng.dto.PriceDto;
 import com.sieng.java.phoneshop_sieng.dto.ProductDTO;
 import com.sieng.java.phoneshop_sieng.dto.ProductImportDto;
 import com.sieng.java.phoneshop_sieng.dto.SaleDto;
+import com.sieng.java.phoneshop_sieng.dto.report.ProductReportDTO;
 import com.sieng.java.phoneshop_sieng.entity.Brand;
 import com.sieng.java.phoneshop_sieng.entity.Model;
 import com.sieng.java.phoneshop_sieng.entity.Product;
@@ -57,6 +58,12 @@ public class ReportController {
 		return ResponseEntity.ok(productSolds);
 	}
 	
+	@GetMapping("v2/{startDate}/{endDate}")
+	public ResponseEntity<?> productSoldV2(@DateTimeFormat(pattern = "yyyy-MM-dd")@PathVariable("startDate")LocalDate startDate ,
+			@DateTimeFormat(pattern = "yyyy-MM-dd")@PathVariable("endDate") LocalDate endDate){
+		List<ProductReportDTO> productSolds = reportService.getProductReport(startDate, endDate);
+		return ResponseEntity.ok(productSolds);
+	}
 	
 	
 }

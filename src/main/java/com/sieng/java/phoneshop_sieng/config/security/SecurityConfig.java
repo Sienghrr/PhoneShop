@@ -36,13 +36,13 @@ public class SecurityConfig {
 	@Autowired
 	private AuthenticationConfiguration authenticationConfiguration;
 	
-	private FilterChainExceptionHandler filterChainExceptionHandler;
+	//private FilterChainExceptionHandler filterChainExceptionHandler;
 	
 	@Bean
 	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 	http.csrf().disable()
 		.addFilter(new JwtLonginFilter(authenticationManager(authenticationConfiguration)))
-		.addFilterBefore(filterChainExceptionHandler, JwtLonginFilter.class)
+		//.addFilterBefore(filterChainExceptionHandler, JwtLonginFilter.class)
 		.addFilterAfter(new TokenVerify(), JwtLonginFilter.class)
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and()		
