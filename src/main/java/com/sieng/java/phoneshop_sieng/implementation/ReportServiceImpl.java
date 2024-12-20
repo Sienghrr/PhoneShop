@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.sieng.java.phoneshop_sieng.dto.report.ExpenseReportDTO;
 import com.sieng.java.phoneshop_sieng.dto.report.ProductReportDTO;
 import com.sieng.java.phoneshop_sieng.entity.Product;
+import com.sieng.java.phoneshop_sieng.entity.ProductImportHistory;
 import com.sieng.java.phoneshop_sieng.entity.SaleDetail;
 import com.sieng.java.phoneshop_sieng.projection.ProductSold;
 import com.sieng.java.phoneshop_sieng.repository.ProductImportHistoryRepository;
@@ -21,6 +23,8 @@ import com.sieng.java.phoneshop_sieng.repository.ProductRepository;
 import com.sieng.java.phoneshop_sieng.repository.SaleDetailsRepository;
 import com.sieng.java.phoneshop_sieng.repository.SaleRepository;
 import com.sieng.java.phoneshop_sieng.service.ReportService;
+import com.sieng.java.phoneshop_sieng.spec.ProductImportHistoryFilter;
+import com.sieng.java.phoneshop_sieng.spec.ProductImportHistorySpec;
 import com.sieng.java.phoneshop_sieng.spec.SaleDetailFilter;
 import com.sieng.java.phoneshop_sieng.spec.SaleDetailSpec;
 
@@ -41,8 +45,40 @@ public class ReportServiceImpl implements ReportService{
 
 	@Override
 	public List<ExpenseReportDTO> getExpenseReport(LocalDate startDate, LocalDate endDate) {
-		//productImportHistoryRepository.findAll(null);
-		return null;
+		
+		ProductImportHistoryFilter importHistoryFilter = new ProductImportHistoryFilter();
+		importHistoryFilter.setStartDate(startDate);
+		importHistoryFilter.setEndDate(endDate);
+		ProductImportHistorySpec spec = new ProductImportHistorySpec(importHistoryFilter);		
+		List<ProductImportHistory> importHistories = productImportHistoryRepository.findAll(spec);
+		
+		Set<Long> productIds = importHistories.stream()
+		.map(his -> his.getProduct().getId())
+		.collect(Collectors.toSet());
+		List<Product> products = productRepository.findAllById(productIds);
+		
+		Map<Long, Product> productMap = products.stream().collect(Collectors.toMap(p -> p.getId(), p->p));
+		
+		Map<Product, List<ProductImportHistory>> importMap = importHistories.stream()
+				.collect(Collectors.groupingBy(pi -> pi.getProduct()));			
+				
+		var expenseReportDTOs = new ArrayList<ExpenseReportDTO>();
+		for(var entry : importMap.entrySet()) {
+			Product product = productMap.get(entry.getKey().getId());
+			
+			List<ProductImportHistory> hisList = entry.getValue();
+			int totalUnit = hisList.stream().mapToInt(pih -> pih.getImportUnit()).sum();
+			double totalAmount = hisList.stream()
+			.mapToDouble(pih -> pih.getImportUnit() * pih.getPricePerUnit().doubleValue()).sum();
+			var expenseReportDTO = new ExpenseReportDTO();
+			expenseReportDTO.setProductId(product.getId());
+			expenseReportDTO.setProductName(product.getName());
+			expenseReportDTO.setTotalUnit(totalUnit);
+			expenseReportDTO.setTotalAmount(BigDecimal.valueOf(totalAmount));
+			
+			expenseReportDTOs.add(expenseReportDTO);
+		}
+		return expenseReportDTOs;
 	}
 
 	@Override

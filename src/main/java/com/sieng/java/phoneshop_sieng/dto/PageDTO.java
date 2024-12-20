@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-import com.sieng.java.phoneshop_sieng.spec.PaginationDTO;
-
 import lombok.Data;
 
 @Data
