@@ -3,6 +3,7 @@ package com.sieng.java.phoneshop_sieng.implementation;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -129,6 +130,8 @@ public class ReportServiceImpl implements ReportService{
 			reportDTO.setTotalAmount(BigDecimal.valueOf(totalAmount));
 			
 			list.add(reportDTO);
+			
+			Collections.sort(list,(a,b) -> (int)( a.getProductId() - b.getProductId()));
 		}
 				
 		return list;
